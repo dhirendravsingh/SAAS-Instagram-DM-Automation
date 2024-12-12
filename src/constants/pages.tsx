@@ -2,6 +2,7 @@ import {
     AutomationDuoToneBlue,
     ContactsDuoToneBlue,
     HomeDuoToneBlue,
+    HomeDuoToneWhite,
     RocketDuoToneBlue,
     SettingsDuoToneWhite,
   } from '@/icons'

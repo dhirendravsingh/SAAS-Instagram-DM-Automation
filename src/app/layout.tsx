@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import {
@@ -8,11 +8,11 @@ import {
 } from '@clerk/nextjs'
 import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const jakrata = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Autogram",
-  description: "Autogram Web Application",
+  description: "Automates DMs and comments on Instagram",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
     <html lang="en">
-      <body className={inter.className}>
+      <body className={jakrata.className}>
       <ThemeProvider
             attribute="class"
             defaultTheme="system"
