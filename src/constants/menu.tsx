@@ -3,6 +3,7 @@ import {
     HomeDuoToneWhite,
     RocketDuoToneWhite,
     SettingsDuoToneWhite,
+    Settings
   } from '@/icons'
   import { v4 as uuid } from 'uuid'
   
@@ -34,6 +35,6 @@ import {
     {
       id: uuid(),
       label: 'settings',
-      icon: <SettingsDuoToneWhite />,
+      icon: <Settings />,
     },
   ]

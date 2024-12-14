@@ -58,7 +58,7 @@ export default function Home() {
                 <Link href="#pricing">Pricing</Link>
                 <Link href="#about">About</Link>
               </nav>
-              <Button className="bg-white text-primary hover:bg-rose-200/50">
+              <Button className="bg-white text-primary hover:bg-rose-50/30">
                 <Link href="/dashboard">Login</Link>
               </Button>
             </div>
@@ -143,7 +143,7 @@ export default function Home() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full">{plan.cta}</Button>
+                  <Button className="w-full bg-rose-700">{plan.cta}</Button>
                 </CardFooter>
               </Card>
             ))}
