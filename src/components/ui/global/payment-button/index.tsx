@@ -5,7 +5,7 @@ type Props = {
 }
 const PaymentButton = (props : Props) => {
   return (
-    <Button className='bg-gradient-to-br text-[#FFF5EE] hover:text-[#000000] rounded-full from-[#ff0c49] via-[#fe608d] font-bold to-[#ff0c49] '>Upgrade</Button>
+    <Button className='bg-gradient-to-r text-[#000000] hover:text-[#00000087] rounded-full from-[#DC143C] via-[#faeb36] font-bold to-[#487de7] '>Upgrade</Button>
   )
 }
 

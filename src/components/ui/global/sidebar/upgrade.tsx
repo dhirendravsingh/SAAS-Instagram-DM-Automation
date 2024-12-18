@@ -11,7 +11,8 @@ const UpgradeCard = (props : Props) => {
         <span
           className="bg-gradient-to-r 
         from-[#DC143C] 
-        to-[#E30B5C] 
+        via-[#faeb36]
+        to-[#487de7] 
         font-bold 
         bg-clip-text 
         text-transparent"
