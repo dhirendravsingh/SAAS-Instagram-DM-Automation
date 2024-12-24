@@ -4,8 +4,9 @@ import { findUser } from './queries'
 import { refreshToken } from '@/lib/fetch'
 import { currentUser } from '@clerk/nextjs/server'
 import { updateIntegration } from '../integrations/queries'
-
+import { createUser } from './queries'
 export const onCurrentUser = async()=>{
+    //the currentUser function of NextJs returns the data of the user that is already logged in into the system
     const user = await currentUser()
     if(!user){
         return redirect('/sign-in')
@@ -38,11 +39,46 @@ export const onBoardUser = async ()=>{
                     const expire_date = today.setDate(today.getDate() + 60)
 
                     const update_token = await updateIntegration( refresh.access_token, found.integrations[0].id, new Date(expire_date))
+
+                    if(!update_token){
+                        console.log('Update token failed')
+                    }
                 }
 
            }
+
+           return {
+            status : 200,
+            data: {
+                firstName : found.firstName,
+                lastname : found.lastName
+            }
+           }
         }
+        const created = await createUser(
+            user.id,
+            user.firstName!,
+            user.lastName!,
+            user.emailAddresses[0].emailAddress
+        )
+        return {status : 201 , data : created}
     } catch (error) {
-        
+        console.log(error)
+        return {status : 500}
+    }
+}
+
+
+export const onUserInfo=async ()=>{
+    const user = await onCurrentUser()
+
+    try {
+        const profile = await findUser(user.id)
+        if(profile) return {status:200, data: profile}
+
+        return {status: 404}
+    } catch (error) {
+        return {status: 500}
+
     }
 }

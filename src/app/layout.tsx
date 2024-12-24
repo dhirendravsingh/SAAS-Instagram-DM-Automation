@@ -7,7 +7,7 @@ import {
  
 } from '@clerk/nextjs'
 import { Toaster } from "sonner";
-
+import ReactQueryProvider from "@/providers/react-query-provider";
 const jakrata = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -30,7 +30,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          {children}
+            <ReactQueryProvider>
+            {children}
+
+            </ReactQueryProvider>
           <Toaster/>
       </ThemeProvider>
       </body>   
