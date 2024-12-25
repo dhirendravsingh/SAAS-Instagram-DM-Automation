@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils'
 import GradientButton from '../gradient-button'
 const AutomationList = () => {
     const {pathname} = usePaths()
+    //here we have to render out all the automations that we get from the database
+    
   return (
     <div className='flex flex-col gap-y-3'>
         <Link href={`${pathname}/123123123123`} className='bg-[#1d1d1d] hover:opacity-80 transition duration-100 rounded-xl p-5 border-[1px] radial--gradient--automations flex border=[#545454]'>
