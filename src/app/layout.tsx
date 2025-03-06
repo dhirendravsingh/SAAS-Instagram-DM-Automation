@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
-import {
-  ClerkProvider,
- 
-} from '@clerk/nextjs'
+import {ClerkProvider} from '@clerk/nextjs'
 import { Toaster } from "sonner";
+import ReduxProvider from "@/providers/redux-provider";
 import ReactQueryProvider from "@/providers/react-query-provider";
+
 const jakrata = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -30,10 +29,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <ReduxProvider>
             <ReactQueryProvider>
             {children}
 
             </ReactQueryProvider>
+            </ReduxProvider>
           <Toaster/>
       </ThemeProvider>
       </body>   

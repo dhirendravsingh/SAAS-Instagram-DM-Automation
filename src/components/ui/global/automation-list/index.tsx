@@ -1,32 +1,42 @@
 'use client'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { usePaths } from '@/hooks/use-nav'
 import Link from 'next/link'
 import { Button } from '../../button'
 import { cn, getmonth } from '@/lib/utils'
 import GradientButton from '../gradient-button'
 import { useQueryAutomations } from '@/hooks/user-queries'
+import { useMutationDataState } from '@/hooks/use-mutation-data'
 import CreateAutomation from '../create-automation'
 const AutomationList = () => {
     //here we have to render out all the automations that we get from the database
     const {data} = useQueryAutomations()
 
+    const {latestVariable} = useMutationDataState(["create-automation"])
+    const {pathname} = usePaths()
+
 if(data?.status !== 200 || data.data.length<=0){
     return (
         <div className='h-[70vh] flex justify-center items-center flex-col gap-y-3'>
             <h3 className='text-lg text-gray-400'>
-                No automations created
+                No automations
             </h3>
             <CreateAutomation/>
         </div>
     )
 }
-
-    const {pathname} = usePaths()
+    const optimisticUiData = useMemo(()=>{
+        if(latestVariable?.variables) {
+            const test =  [latestVariable.variables, ...data.data]
+            return {data : test}
+        }
+        return data
+    }, [latestVariable,data] )
     
   return (
     <div className='flex flex-col gap-y-3'>
-       {data.data!.map((automation)=>(
+       {optimisticUiData.data!.map((automation)=>(
+        //this link below will take up to that respective automation, with its id set in the params
         <Link key={automation.id} href={`${pathname}/${automation.id}`} className='bg-[#1d1d1d] hover:opacity-80 transition duration-100 rounded-xl p-5 border-[1px] radial--gradient--automations flex border=[#545454]'>
 
     <div className='flex flex-col flex-1 items-start'>
@@ -53,10 +63,11 @@ if(data?.status !== 200 || data.data.length<=0){
                 {automation.createdAt.getUTCDate()===1 ? `${automation.createdAt.getUTCDate()}st` : `${automation.createdAt.getUTCDate()}th`}{' '}
                 {automation.createdAt.getUTCFullYear()}
             </p>
-            <GradientButton type='BUTTON' className='w-full bg-background-80 text-white hover:bg-background-80'>Smart AI</GradientButton>
-            <Button className='bg-background-80 hover:bg-background-80 text-white'>
-                Standard
-            </Button>
+            {automation.listener?.listener=== 'SMARTAI' ? (<GradientButton type='BUTTON' className='w-full bg-background-80 text-white hover:bg-background-80'>Smart AI</GradientButton>
+         ): ( <Button className='bg-background-80 hover:bg-background-80 text-white'>
+        Standard
+        </Button>)}
+           
         </div>
         </Link>
         ))}
