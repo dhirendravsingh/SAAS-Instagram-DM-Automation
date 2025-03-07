@@ -1,6 +1,5 @@
 import { duplicateValidation } from "@/lib/utils";
-import { Payload } from "@prisma/client/runtime/library";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice} from "@reduxjs/toolkit";
 
 type IntialStateProps = {
     trigger?: {
