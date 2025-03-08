@@ -30,6 +30,7 @@ model Subscription {
   id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   User    User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String? @unique @db.Uuid
+  plan SUBSCRIPTION_PLAN @default(FREE)
 }
 
 model Automation {

@@ -5,6 +5,8 @@ import { createAutomation } from "./queries"
 import { getAutomations } from "./queries"
 import { findAutomation } from "./queries"
 import { updateAuomation } from "./queries"
+import { addListener } from "./queries"
+import { addTrigger } from "./queries"
 
 export const createAutomations = async (id?: string)=>{
     //first thing we had to do is to verify the user
@@ -59,6 +61,36 @@ export const updateAutomationName= async(automationId : string, data : {
             return {status : 200, data :  "Automation successfully updated"}
         }
         return {status : 404, data : "Oops! could not find automation"}
+    } catch (error) {
+        return {status : 500, data : "Oops! something went wrong"}
+    }
+}
+
+export const saveListener = async (
+    automationId : string,
+    listener : "MESSAGE" | "SMARTAI",
+    prompt : string,
+    reply? : string
+) => {
+    await onCurrentUser()
+    //another server action has to be created of adding a listener
+        try {
+            const create  = await addListener(automationId, listener, prompt, reply)
+            if(create) return {status : 200, data : "Listener created"}
+            return {status : 404, data : "Can't save listener"}
+        } catch (error) {
+            return {status : 500, data : "Oops! something went wrong"}
+        }
+    
+}
+
+export const saveTrigger = async (automationId : string, trigger : string[])=> {
+    await onCurrentUser()
+    //another server action has to be created of adding a trigger
+    try {
+        const create = await addTrigger(automationId , trigger)
+        if(create) return {status : 200, data : "Trigger saved"}
+        return { status: 404, data: "Cannot save trigger"}
     } catch (error) {
         return {status : 500, data : "Oops! something went wrong"}
     }
