@@ -4,11 +4,14 @@ import { useQueryAutomation } from '@/hooks/user-queries'
 import ActiveTrigger from './active'
 import React from 'react'
 import { Separator } from '@radix-ui/react-separator'
-import ThenAction from '../../then/then-actions'
-import { TriggerButton } from '../../trigger-button'
+import ThenAction from '../then/then-actions'
+import { TriggerButton } from '../trigger-button'
 import { AUTOMATIONS_TRIGGERS } from '@/constants/automation'
 import { useTriggers } from '@/hooks/use-automations'
 import { cn } from '@/lib/utils'
+import Keywords from './keywords'
+import { Button } from '@/components/ui/button'
+import Loader from '../../loader'
 
 type Props = {
     id : string
@@ -40,7 +43,7 @@ const Trigger = ({id}: Props) => {
   }
   return <TriggerButton label="Add Trigger">
     <div className='flex flex-col gap-y-2'>
-      {AUTOMATIONS_TRIGGERS.map((trigger)=> 
+      {AUTOMATIONS_TRIGGERS.map((trigger)=> (
         <div key={trigger.id} onClick={()=> onSetTrigger(trigger.type)}
         className={cn('hover:opacity-80 text-white rounded-xl flex cursor-pointer flex-col p-3 gap-y-2', !types?.find((t)=> t===trigger.type) ? 'bg-background-80' : 'bg-gradient-to-br from-[#3352cc] font-medium to-[#1c2d70]')}
         >
@@ -49,8 +52,13 @@ const Trigger = ({id}: Props) => {
           </div>
           <p className='text-sm font-light'>{trigger.description}</p>
         </div>
-
+      )
       )}
+      <Keywords id ={id}/>
+      <Button onClick={onSaveTrigger} disabled={types?.length===0} className='bg-gradient-to-br from-[#3352cc] font-medium text-white to-[#1c2d70]'>
+      <Loader state={isPending}>Create Trigger</Loader>
+      </Button>
+
     </div>
   </TriggerButton>
 }

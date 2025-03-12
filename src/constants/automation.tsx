@@ -45,7 +45,7 @@ export const AUTOMATIONS_TRIGGERS : AutomationTriggerProps[] = [
     },
     {
         id : v4(),
-        label :  "Send me a dm with a keyword",
+        label :  "User sends me a dm with a keyword",
         icon : <TinyInstagram/>,
         description : "Select if you want to automate DMs on your post",
         type : "DM"

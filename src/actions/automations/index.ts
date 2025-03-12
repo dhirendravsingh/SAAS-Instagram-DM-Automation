@@ -7,6 +7,8 @@ import { findAutomation } from "./queries"
 import { updateAuomation } from "./queries"
 import { addListener } from "./queries"
 import { addTrigger } from "./queries"
+import { addKeyword } from "./queries"
+import { removeKeyword } from "./queries"
 
 export const createAutomations = async (id?: string)=>{
     //first thing we had to do is to verify the user
@@ -91,6 +93,30 @@ export const saveTrigger = async (automationId : string, trigger : string[])=> {
         const create = await addTrigger(automationId , trigger)
         if(create) return {status : 200, data : "Trigger saved"}
         return { status: 404, data: "Cannot save trigger"}
+    } catch (error) {
+        return {status : 500, data : "Oops! something went wrong"}
+    }
+}
+
+export const saveKeyword= async (automationId : string, keyword : string)=>{ 
+    await onCurrentUser()
+    //another server action has to be created of adding a trigger
+    try {
+        const create = await addKeyword(automationId , keyword)
+        if(create) return {status : 200, data : "Keyword added successfully"}
+        return { status: 404, data: "Cannot add this keyword"}
+    } catch (error) {
+        return {status : 500, data : "Oops! something went wrong"}
+    }
+}
+
+export const deleteKeyword = async (id : string) => {
+    await onCurrentUser()
+    //another server action has to be created of adding a trigger
+    try {
+        const deleted = await removeKeyword(id)
+        if(deleted) return {status : 200, data : "Keyword deleted successfully"}
+        return { status: 404, data: "Keyword not found"}
     } catch (error) {
         return {status : 500, data : "Oops! something went wrong"}
     }

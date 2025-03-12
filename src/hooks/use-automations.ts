@@ -10,6 +10,8 @@ import { AppDispatch } from "@/redux/store"
 import { useDispatch } from "react-redux"
 import { TRIGGER } from "@/redux/slices/automations"
 import { saveTrigger } from "@/actions/automations"
+import  { saveKeyword } from "@/actions/automations"
+import { deleteKeyword } from "@/actions/automations"
 
 export const useCreateAutomation = (id?:string)=>{
     //we will requrie one hook to fetch data in the form of optimistic UI
@@ -97,3 +99,33 @@ export const useTriggers = (id: string)=>{
     }
 
 
+
+    export const useKeywords = (id: string)=>{ 
+        const [keyword, setKeyword] = useState('')
+
+        const onValueChange = (e: React.ChangeEvent<HTMLInputElement>)=> setKeyword(e.target.value)
+
+        const {mutate} = useMutationData(['add-keyword'],
+             (data: {keyword: string})=> saveKeyword(id, data.keyword),
+              'automation-info', 
+            ()=> setKeyword('')
+            )
+
+        const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>)=>{ 
+            if(e.key === 'Enter'){
+                //we have to dispatch an action to save the keyword
+                mutate({keyword})
+                setKeyword('')
+            }
+        }
+
+        //if user tries to delete the keyword, we have to dispatch an action to delete the keyword
+        const {mutate : deleteMutation} = useMutationData(
+            ['delete-keyword'],
+            (data: {id: string})=> deleteKeyword(data.id),
+            'automation-info'
+
+        )
+
+        return {keyword, onValueChange, onKeyPress, deleteMutation}
+    }

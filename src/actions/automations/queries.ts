@@ -116,3 +116,26 @@ export const addListener = async (automationId : string, listener : "MESSAGE" | 
         }
     })
  }
+
+ export const addKeyword = async (automationId : string, keyword : string)=>{ 
+    return client.automation.update({
+        where : {
+            id:  automationId
+        },
+         data : {
+            keywords : {
+                create : {
+                    word : keyword
+                }
+            }
+         }
+    })
+ }
+
+ export const removeKeyword = async (id: string)=> {
+    return client.keyword.delete({
+        where : {
+            id
+        }
+    })
+ }
