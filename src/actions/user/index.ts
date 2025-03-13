@@ -1,10 +1,12 @@
 "use server"
 import {redirect} from 'next/navigation'
-import { findUser } from './queries'
+import { findUser, updateSubscription } from './queries'
 import { refreshToken } from '@/lib/fetch'
 import { currentUser } from '@clerk/nextjs/server'
 import { updateIntegration } from '../integrations/queries'
 import { createUser } from './queries'
+import { stripe } from '@/app/(protected)/api/payment/route'
+
 export const onCurrentUser = async()=>{
     //the currentUser function of NextJs returns the data of the user that is already logged in into the system
     const user = await currentUser()
@@ -83,3 +85,20 @@ export const onUserInfo=async ()=>{
     }
 }
 
+export const onSubscribe = async (session_id : string)=> {
+    const user = await onCurrentUser()
+    try {
+        const session = await stripe.checkout.sessions.retrieve(session_id)
+        if(session){
+            const subscribed = await updateSubscription(user.id , {
+                customerId : session.customer as string,
+                plan : 'PRO'
+            })
+            if(subscribed) return {status : 200}
+            return {status : 401}
+        }
+        return {status : 404}
+    } catch (error) {
+        return {status : 500}
+    }
+}

@@ -16,7 +16,7 @@ export default function Home() {
     {
       name: 'Free Plan',
       description: 'Perfect for getting started',
-      price: '$0',
+      price: '₹0',
       features: [
         'Boost engagement with target responses',
         'Automate comment replies to enhance audience interaction',
@@ -27,7 +27,7 @@ export default function Home() {
     {
       name: 'Smart AI Plan',
       description: 'Advanced features for power users',
-      price: '$99',
+      price: '₹5999',
       features: [
         'All features from Free Plan',
         'AI-powered response generation',
