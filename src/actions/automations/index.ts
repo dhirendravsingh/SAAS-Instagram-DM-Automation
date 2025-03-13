@@ -9,6 +9,8 @@ import { addListener } from "./queries"
 import { addTrigger } from "./queries"
 import { addKeyword } from "./queries"
 import { removeKeyword } from "./queries"
+import { findUser } from "../user/queries"
+import { addPost } from "./queries"
 
 export const createAutomations = async (id?: string)=>{
     //first thing we had to do is to verify the user
@@ -119,5 +121,42 @@ export const deleteKeyword = async (id : string) => {
         return { status: 404, data: "Keyword not found"}
     } catch (error) {
         return {status : 500, data : "Oops! something went wrong"}
+    }
+}
+
+export const getProfilePosts = async () => {
+    const user = await onCurrentUser()
+    try {
+        const profile = await findUser(user.id)
+        const posts = await fetch(
+            `${process.env.INSTAGRAM_BASE_URL}/me/media?fields=id,caption,media_url,media_type,timestamp&limit=10&access_token=${profile?.integrations[0].token}`
+        )
+        const parsed = await posts.json()
+        if(parsed) return {status : 200, data: parsed}
+        console.log("Error in getting posts")
+        return {status : 400}
+    } catch (error) {
+        console.log("Server side Error in getting posts", error)
+        return {status : 500}
+    }
+}
+
+export const savePosts = async (
+    automationId : string,
+    posts : {
+        postId : string
+        caption? : string
+        media : string
+        mediaType : 'IMAGE' | 'VIDEO' | 'CAROSEL_ALBUM'
+    }[]
+) => {
+    await onCurrentUser()
+
+    try {
+        const create = await addPost(automationId, posts)
+        if(create) return {status : 200, data : "Posts attached"}
+        return {status : 400, data : 'Automation not found'}
+    } catch (error) {
+        return {status : 500, data: 'Oops! something went wrong'}
     }
 }

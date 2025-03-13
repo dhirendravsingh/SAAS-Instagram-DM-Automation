@@ -139,3 +139,27 @@ export const addListener = async (automationId : string, listener : "MESSAGE" | 
         }
     })
  }
+
+
+ export const addPost = async(
+    automationId : string,
+    posts : {
+        postId : string
+        caption? : string
+        media : string
+        mediaType : 'IMAGE' | 'VIDEO' | 'CAROSEL_ALBUM'
+    }[]
+ ) => {
+        return await client.automation.update({
+            where : {
+                id : automationId,
+            },
+            data : {
+                posts : {
+                    createMany : {
+                        data : posts,
+                    },
+                },
+            },
+        })
+    }

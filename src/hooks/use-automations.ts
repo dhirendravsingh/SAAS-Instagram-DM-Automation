@@ -12,6 +12,7 @@ import { TRIGGER } from "@/redux/slices/automations"
 import { saveTrigger } from "@/actions/automations"
 import  { saveKeyword } from "@/actions/automations"
 import { deleteKeyword } from "@/actions/automations"
+import { savePosts } from "@/actions/automations"
 
 export const useCreateAutomation = (id?:string)=>{
     //we will requrie one hook to fetch data in the form of optimistic UI
@@ -128,4 +129,35 @@ export const useTriggers = (id: string)=>{
         )
 
         return {keyword, onValueChange, onKeyPress, deleteMutation}
+    }
+
+    export const useAutomationPosts = (id : string)=> {
+        //first we will have all the posts in a state, then a helper function to select the posts
+        const [posts, setPosts] = useState<
+        {
+            postId : string
+            caption?: string
+            media : string
+            mediaType : 'IMAGE' | 'VIDEO' | 'CAROSEL_ALBUM'
+        }[]
+        >([])
+
+        const onSelectPost = (post : {
+            postId : string
+            caption?: string
+            media : string
+            mediaType : 'IMAGE' | 'VIDEO' | 'CAROSEL_ALBUM'
+        }) => {
+            setPosts((prevItems)=> {
+                if(prevItems.find((p)=> p.postId === post.postId)){
+                    return prevItems.filter((item)=> item.postId !== post.postId)
+                }
+                else {
+                    return [...prevItems, post]
+                }
+            })
+        }
+
+        const {mutate, isPending} = useMutationData(['attach-posts'], ()=> savePosts(id, posts), "automation-info", ()=> setPosts([]) )
+        return {posts, onSelectPost, mutate, isPending}
     }

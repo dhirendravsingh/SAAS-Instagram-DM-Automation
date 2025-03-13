@@ -37,3 +37,4 @@ next-env.d.ts
 
 # enviromental variables
 .env
+.qodo
